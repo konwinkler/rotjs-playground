@@ -128,7 +128,7 @@ Player.prototype.handleEvent = function(e) {
     var newKey = newX + "," + newY;
     if (!(newKey in Game.map)) { return; }
 
-    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], foregroundColor, backgroundColor);
+    this._undraw()
     this._x = newX;
     this._y = newY;
     this._draw();
@@ -136,6 +136,14 @@ Player.prototype.handleEvent = function(e) {
     Game.engine.unlock();
 }
 
+Player.prototype._undraw = function() {
+    this._fov.compute(this._x, this._y, 10, function(x, y, r, visibility) {
+        var color = (Game.map[x+","+y] ? backgroundColor : "#000");
+        Game.display.draw(x, y, " ", foregroundColor, color);
+    }); 
+    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], foregroundColor, backgroundColor);
+}
+    
 Player.prototype._draw = function() {
     this._fov.compute(this._x, this._y, 10, function(x, y, r, visibility) {
         var color = (Game.map[x+","+y] ? "#aa0": "#660");
