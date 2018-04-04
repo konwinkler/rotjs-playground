@@ -1,6 +1,9 @@
 const backgroundColor = "#888"
 const foregroundColor = "#000"
 
+const width = 70;
+const height = 20;
+
 var Game = {
     display: null,
     map: {},
@@ -10,11 +13,10 @@ var Game = {
     ananas: null,
     
     init: function() {
-        this.display = new ROT.Display({spacing:1.1});
+        this.display = new ROT.Display({width: width, height: height, spacing:1.1});
         document.body.appendChild(this.display.getContainer());
         
         this._generateMap();
-
 
         
         var scheduler = new ROT.Scheduler.Simple();
@@ -26,7 +28,7 @@ var Game = {
     },
     
     _generateMap: function() {
-        var digger = new ROT.Map.Digger();
+        var digger = new ROT.Map.Digger(width, height/*, {corridorLength: [5, 5]}*/);
         var freeCells = [];
         
         var digCallback = function(x, y, value) {
